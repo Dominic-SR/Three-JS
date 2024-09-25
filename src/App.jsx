@@ -4,12 +4,14 @@ import Home from './Pages/Home'
 import About from './Pages/About'
 import Contact from './Pages/Contact'
 import Project from './Pages/Project'
+import Navbar from './Components/Navbar'
 
 
 const App = () => {
   return (
     <main>
       <BrowserRouter>
+      <Navbar />
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/about' element={<About />} />
