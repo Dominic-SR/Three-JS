@@ -20,77 +20,30 @@ export function Model(props) {
   const { nodes, materials } = useGLTF(isLandScene)
   return (
     <a.group ref={islandRef} {...props} >
-      <group position={[-1.541, 2.162, 1.136]} scale={[1.501, 1.181, 1.501]}>
         <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.polySurface12_home_body_0.geometry}
-          material={materials.home_body}
+          geometry={nodes.polySurface986_tree_body_0.geometry}
+          material={materials.PaletteMaterial001}
         />
         <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.polySurface1336_wood_0.geometry}
-          material={materials.wood}
+          geometry={nodes.polySurface987_tree1_0.geometry}
+          material={materials.PaletteMaterial001}
         />
         <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.polySurface1467_wood_0.geometry}
-          material={materials.wood}
-        />
-      </group>
-      <group
-        position={[-0.686, 13.571, 2.281]}
-        rotation={[Math.PI / 2, 0, 0]}
-        scale={[2.34, 3.321, 4.929]}>
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.polySurface16_roof1_0.geometry}
-          material={materials.roof1}
+          geometry={nodes.polySurface988_tree2_0.geometry}
+          material={materials.PaletteMaterial001}
         />
         <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.polySurface16_windows_background_0.geometry}
-          material={materials.windows_background}
+          geometry={nodes.polySurface989_tree2_0.geometry}
+          material={materials.PaletteMaterial001}
         />
         <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.polySurface16_roof3_0.geometry}
-          material={materials.roof3}
+          geometry={nodes.polySurface990_tree_body_0.geometry}
+          material={materials.PaletteMaterial001}
         />
         <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.polySurface17_windows_frame_0.geometry}
-          material={materials.windows_frame}
+          geometry={nodes.polySurface991_tree_body_0.geometry}
+          material={materials.PaletteMaterial001}
         />
-      </group>
-
-
-      <group position={[-0.686, 10.944, 4.73]} scale={[1.951, 2.312, 1.951]}>
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.polySurface13_windows_frame_0.geometry}
-          material={materials.windows_frame}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.polySurface14_wood2_0.geometry}
-          material={materials.wood2}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.polySurface727_wood2_0.geometry}
-          material={materials.wood2}
-        />
-      </group>
     </a.group>
   )
 }
