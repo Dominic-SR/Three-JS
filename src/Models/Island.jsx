@@ -6,17 +6,13 @@ Source: https://sketchfab.com/3d-models/foxs-islands-163b68e09fcc47618450150be77
 Title: Fox's islands
 */
 
-import React, { useRef } from 'react'
+import React, { useRef, useEffect} from 'react'
 import { useGLTF } from '@react-three/drei'
 import { events, useFrame, useThree} from "@react-three/fiber";
 import {a} from "@react-spring/three"
 import isLandScene from "../assets/3d/island.glb"
 
-function Island({
-  isRotation,
-  setIsRotation,
-  ...props
-}) {
+function Island({isRotating,setIsRotating,setCurrentStage,...props}) {
 
   const islandRef = useRef();
   const {gl,viewport} = useThree()
@@ -30,29 +26,39 @@ function Island({
   const handleMouseDown = (event) =>{
     event.stopProgation();
     event.preventDefault();
-    setIsRotation(true);
+    setIsRotating(true);
 
     const clientX = event.touches ? event.touches.clientX : event.clientX;
 
     lastX.current = clientX;
   }
 
+  const handlePointerDown = (event) =>{
+    event.stopProgation();
+    event.preventDefault();
+    setIsRotating(true)
+
+    const clientX = event.touches ? event.touches.clientX : event.clientX;
+
+    lastX.current = clientX
+  }
+
   const handlePointerUp = (event) =>{
     event.stopProgation();
     event.preventDefault();
-    setIsRotation(false)
+    setIsRotating(false)
   }
 
   const handlePointerMove = (event) => {
     event.stopPropagation();
     event.preventDefault();
 
-    if(isRotation){
+    if(isRotating){
       const clientX =  event.touches ? event.touches[0].clientX : event.clientX;
     
-      const delta = [clientX = lastX.current] / viewport/width;
+      const delta = (clientX - lastX.current) / viewport/width;
 
-      islandRef.current.rotation.y += delta * 0.01 * Math.PI;
+      islandRef.currenIsRotationt.rotation.y += delta * 0.01 * Math.PI;
 
       lastX.current = clientX;
 
@@ -60,6 +66,80 @@ function Island({
     }
   }
 
+  const handleKeyUp = (event) =>{
+    if(event.key === 'ArrowLeft' || event.key === 'ArrowRight'){
+      setIsRotating(false)
+    }
+  }
+
+  const handleKeyDown = (event) =>{
+    if(event.key === "ArrowLeft"){
+      if(!isRotating) setIsRotating(true);
+
+      islandRef.current.rotation.y += 0.005 * Math.PI;
+      rotationSpeed.current = 0.007;
+    }
+    else if(event.key === "ArrowRight")
+      if(!isRotating) setIsRotating(true);
+
+      islandRef.current.rotation.y -= 0.005 * Math.PI;
+      rotationSpeed.current = -0.007
+  }
+
+  useEffect(() => { 
+
+    const canvas = gl.domElement;
+
+    canvas.addEventListener['pointerdown',handlePointerDown];
+    canvas.addEventListener['pointeup',handlePointerUp];
+    canvas.addEventListener['pointermove',handlePointerMove];
+    canvas.addEventListener['keydown',handleKeyDown];
+    canvas.addEventListener['keyup',handleKeyUp];
+
+    return()=>{
+      canvas.removeEventListener['pointerdown',handlePointerDown];
+      canvas.removeEventListener['pointeup',handlePointerUp];
+      canvas.removeEventListener['pointermove',handlePointerMove];
+      canvas.removeEventListener['keydown',handleKeyDown];
+      canvas.removeEventListener['keyup',handleKeyUp];useFrame
+    }
+
+   }, [gl,handlePointerDown, handlePointerUp, handlePointerDown])
+  
+   useFrame(()=>{
+    if(!isRotating){
+    rotationSpeed.current += dampingFactor;
+
+      if(math.abs(rotationSpeed.current) < 0.001){
+        rotationSpeed.current = 0;
+      }
+      islandRef.current.rotation.y += rotationSpeed.current
+    }
+    else{
+      const rotation = islandRef.current.rotation.y;
+
+      const normalization = ((rotation % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)
+
+      switch(true){
+        case normalization >= 5.45 && normalization <= 5.85:
+          setCurrentStage(4);
+          break;
+        case normalization >= 0.85 && normalization <= 1.3:
+          setCurrentStage(3);
+          break;
+        case normalization >= 2.4 && normalization <= 2.6:
+          setCurrentStage(2);
+          break;
+        case normalization >= 4.25 && normalization <= 4.75:
+          setCurrentStage(1);
+          break;
+        default:
+          setCurrentStage(null)
+
+      }
+    }
+
+   })
   return (
     <a.group ref={islandRef} {...props} >
         <mesh
