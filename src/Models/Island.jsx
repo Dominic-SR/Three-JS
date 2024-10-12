@@ -108,9 +108,9 @@ function Island({isRotating,setIsRotating,setCurrentStage,...props}) {
   
    useFrame(()=>{
     if(!isRotating){
-    rotationSpeed.current += dampingFactor;
+    rotationSpeed.current *= dampingFactor;
 
-      if(math.abs(rotationSpeed.current) < 0.001){
+      if(Math.abs(rotationSpeed.current) < 0.001){
         rotationSpeed.current = 0;
       }
       islandRef.current.rotation.y += rotationSpeed.current
@@ -118,19 +118,19 @@ function Island({isRotating,setIsRotating,setCurrentStage,...props}) {
     else{
       const rotation = islandRef.current.rotation.y;
 
-      const normalization = ((rotation % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)
+      const normalizadRotation = ((rotation % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)
 
       switch(true){
-        case normalization >= 5.45 && normalization <= 5.85:
+        case normalizadRotation >= 5.45 && normalizadRotation <= 5.85:
           setCurrentStage(4);
           break;
-        case normalization >= 0.85 && normalization <= 1.3:
+        case normalizadRotation >= 0.85 && normalizadRotation <= 1.3:
           setCurrentStage(3);
           break;
-        case normalization >= 2.4 && normalization <= 2.6:
+        case normalizadRotation >= 2.4 && normalizadRotation <= 2.6:
           setCurrentStage(2);
           break;
-        case normalization >= 4.25 && normalization <= 4.75:
+        case normalizadRotation >= 4.25 && normalizadRotation <= 4.75:
           setCurrentStage(1);
           break;
         default:
